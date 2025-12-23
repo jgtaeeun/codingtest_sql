@@ -62,6 +62,7 @@ order by b.CREATED_DATE , TITLE
   |%W|요일 이름 (영어)|
 
 
+## 2일차(12/24)
 
 
 
