@@ -62,7 +62,35 @@ order by b.CREATED_DATE , TITLE
   |%W|요일 이름 (영어)|
 
 
-## 2일차(12/24)
+## 2일차(12/25)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|조건에 맞는 도서 리스트 출력하기 <br> https://school.programmers.co.kr/learn/courses/30/lessons/144853|DATE_FORMAT(CREATED_DATE, '%Y-%m-%d') |
+
+```sql
+SELECT BOOK_ID , DATE_FORMAT(PUBLISHED_DATE , '%Y-%m-%d') as PUBLISHED_DATE
+FROM BOOK
+WHERE CATEGORY = '인문' AND YEAR(PUBLISHED_DATE) = 2021
+ORDER BY PUBLISHED_DATE 
+```
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|12세 이하인 여자 환자 목록 출력하기<br> https://school.programmers.co.kr/learn/courses/30/lessons/132201| IFNULL(필드명, NULL일 때 값) <br>COALESCE(필드명, NULL일 때 값) |
+
+```sql
+SELECT PT_NAME, PT_NO,  GEND_CD, AGE, IFNULL( TLNO , 'NONE' ) AS TLNO
+from PATIENT
+WHERE AGE<=12 AND GEND_CD='W'
+ORDER BY AGE DESC , PT_NAME
+```
+   |함수|설명|
+   |:--:|:--:|
+   |IFNULL(필드명, NULL일 때 값)|MySQL/MariaDB 전용|
+   |COALESCE(필드명, NULL일 때 값)|MySQL, PostgreSQL, Oracle, SQL Server 등|
+   |CASE WHEN 필드명 IS NULL THEN NULL일 때 값 ELSE 필드명 END|복잡한 조건 제어 가능|
+   |NVL(필드명, NULL일 때 값) |Oracle 전용|
 
 
 
