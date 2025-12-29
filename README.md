@@ -95,4 +95,63 @@ ORDER BY AGE DESC , PT_NAME
 
 
 
+## 3일차(12/29)
 
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|흉부외과 또는 일반외과 의사 목록 출력하기 <br>https://school.programmers.co.kr/learn/courses/30/lessons/132203|WHERE MCDP_CD = 'CS' OR MCDP_CD = 'GS'  <br>WHERE MCDP_CD IN ( 'CS' ,'GS') |
+
+```sql
+SELECT DR_NAME, DR_ID, , MCDP_CD, DATE_FORMAT( HIRE_YMD , '%Y-%m-%d') AS HIRE_YMD 
+FROM DOCTOR 
+WHERE MCDP_CD = 'CS' OR MCDP_CD = 'GS'
+ORDER BY HIRE_YMD  DESC, DR_NAME ASC 
+```
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|3월에 태어난 여성 회원 목록 출력하기 <br>https://school.programmers.co.kr/learn/courses/30/lessons/131120|Like '%-01-% '<br>  MySQL 같은 DB 엔진은 날짜 형식(DATE, DATETIME)의 데이터를 조회할 때 내부적으로 문자열로 자동 형변환(Implicit Casting)을 지원|
+
+```sql
+SELECT MEMBER_ID, MEMBER_NAME,GENDER,DATE_FORMAT(DATE_OF_BIRTH ,'%Y-%m-%d') AS DATE_OF_BIRTH	
+FROM MEMBER_PROFILE
+WHERE MONTH(DATE_OF_BIRTH) = 3 AND GENDER= 'W' AND TLNO IS NOT NULL
+ORDER BY MEMBER_ID ASC 
+```
+
+- 날짜 필터링
+  - 간단한 확인용: MONTH() 함수가 가장 직관적이고 편합니다.
+  - 성능 최적화 필요 시: **BETWEEN이나 대소 비교(>=, <)를 사용하는 것이 가장 좋습니다.**
+  - LIKE 사용 시: 날짜 포맷(YYYY-MM-DD)을 고려하여 엉뚱한 날짜(일자가 01일인 경우 등)가 걸리지 않게 조심해야 합니다.
+
+
+- null값 조건인가/처리인가
+
+  |구분|IS NOT NULL|IFNULL()|
+  |:--:|:--:|:--:|
+  |성격비교| 	연산자 (조건문)|		함수 (값 처리)|
+  |주요 위치|	WHERE 절	|		SELECT 절, 연산식 내부|
+  |하는 일|	NULL이 아닌 행을 찾아냄|	NULL을 다른 값으로 채워 넣음|
+  |리턴값|	참/거짓 (Boolean)	|	실제 데이터 값 (문자, 숫자 등)|
+
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|강원도에 위치한 생산공장 목록 출력하기 <br>https://school.programmers.co.kr/learn/courses/30/lessons/131112|LIKE '강원도%'  <br> <br> % (퍼센트) : 0개 이상의 모든 문자 <br> _ (언더바) : 정확히 1개의 문자 (자릿수 고정)|
+
+```sql
+SELECT FACTORY_ID,FACTORY_NAME,ADDRESS
+FROM FOOD_FACTORY
+WHERE ADDRESS LIKE '강원도%'
+ORDER BY 1
+```
+
+- LIKE 사용 시 주의사항 (성능과 정확도)
+  - 인덱스(Index) 성능 저하: LIKE '김%'처럼 앞부분이 고정된 경우(Prefix)는 인덱스를 탈 수 있어 빠릅니다. 하지만 LIKE '%김'이나 LIKE '%김%'처럼 앞에 %가 붙으면 DB가 모든 데이터를 다 뒤져야 하므로(Full Scan) 매우 느려집니다. 데이터가 많을 때는 주의해야 합니다.
+  - 대소문자 구분: MySQL은 기본적으로 설정(Collation)에 따라 대소문자를 구분하지 않는 경우가 많지만, Oracle이나 PostgreSQL은 구분하는 경우가 많으므로 확인이 필요합니다.
+  - 특수문자 검색 (ESCAPE): 만약 실제 데이터 안에 %나 _가 포함되어 있어 이를 검색하고 싶다면 ESCAPE 문을 사용해야 합니다.
+  ```sql
+  -- idx/Author/Names :  60/	봄비와씨앗	/100% 순서대로 말하기 도서	
+  -- 책제목이 100%라는 문자열로 시작되는 것
+  SELECT * FROM bookrentalshop.bookstbl	WHERE Names like '100#%%' escape '#'  ;
+  ```
