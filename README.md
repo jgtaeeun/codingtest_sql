@@ -155,3 +155,6 @@ ORDER BY 1
   -- 책제목이 100%라는 문자열로 시작되는 것
   SELECT * FROM bookrentalshop.bookstbl	WHERE Names like '100#%%' escape '#'  ;
   ```
+
+## 4일차(12/30)
+
