@@ -158,3 +158,61 @@ ORDER BY 1
 
 ## 4일차(12/30)
 
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|서울에 위치한 식당 목록 출력하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/131118|SQL에서 별칭(AS)<br>1. 연산이 들어간 컬럼 (계산식)<br>2. 컬럼 이름을 바꿔야 할 때|
+
+```sql
+SELECT 
+    I.REST_ID, 
+    I.REST_NAME, 
+    I.FOOD_TYPE, 
+    I.FAVORITES, 
+    I.ADDRESS, 
+    ROUND(AVG(R.REVIEW_SCORE), 2) AS SCORE
+FROM REST_INFO I
+JOIN REST_REVIEW R
+ON I.REST_ID = R.REST_ID
+WHERE I.ADDRESS LIKE '서울%'
+GROUP BY I.REST_ID,I.REST_NAME,I.FOOD_TYPE, I.FAVORITES, I.ADDRESS
+ORDER BY SCORE DESC, I.FAVORITES DESC;
+```
+
+|코드 수정사항|설명|
+|:--:|:--:|
+|SELECT I.REST_ID	|	I.REST_ID	결과 컬럼명은 어차피 REST_ID로 나오므로 별칭 생략 가능|
+|GROUP BY I.REST_ID, I.REST_NAME |컬럼 명확성<br>여러 테이블 조인 시, 어느 테이블 컬럼인지 명시하는 것이 유지보수에 좋음|
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|재구매가 일어난 상품과 회원 리스트 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/131536|COUNT(*): 테이블의 전체 행(Row) 개수. 특정 컬럼에 NULL이 들어있어도 행 자체가 존재하면 개수에 포함합니다.<br> <br>COUNT(컬럼명): 해당 컬럼의 값이 NULL이 아닌 것만 골라서 개수를 셉니다.|
+
+```sql
+SELECT USER_ID, PRODUCT_ID
+From ONLINE_SALE 
+Group by USER_ID, PRODUCT_ID
+having count(*) >1
+order by 1 asc, 2 desc
+```
+
+- 보통 실무에서는 다음과 같은 이유로 본인이 작성하신 COUNT(*)를 더 자주 사용합니다.
+    - 가독성: "그룹 내 데이터의 개수"를 세는 것이 목적이라면 COUNT(*)가 더 직관적입니다.
+    - 성능 최적화: 최신 데이터베이스(DB) 엔진은 COUNT(*)를 처리할 때 가장 효율적인 인덱스를 알아서 찾아 사용하도록 최적화되어 있습니다.
+    - 안전성: 만약 나중에 다른 컬럼으로 그룹핑을 변경하더라도 쿼리 구조를 크게 고칠 필요가 없습니다.
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|모든 레코드 조회하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/59034|SELECT *|
+
+```sql
+SELECT ANIMAL_ID, ANIMAL_TYPE, DATETIME, INTAKE_CONDITION, NAME, SEX_UPON_INTAKE
+from ANIMAL_INS 
+order by 1 asc
+```
+```sql
+Select *
+from ANIMAL_INS 
+order by ANIMAL_ID
+```
+
+## 5일차(12/31)
