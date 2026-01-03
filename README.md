@@ -216,5 +216,34 @@ order by ANIMAL_ID
 ```
 
 ## 5일차(1/3)
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|모든 레코드 조회하기<br>
+https://school.programmers.co.kr/learn/courses/30/lessons/131537|Union All|
 
+```sql
+SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, 
+       PRODUCT_ID, 
+       USER_ID, 
+       SALES_AMOUNT
+FROM (
+    -- 온라인 판매 데이터
+    SELECT SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
+    FROM ONLINE_SALE
+    WHERE SALES_DATE LIKE '2022-03%'
 
+    UNION ALL
+
+    -- 오프라인 판매 데이터 (USER_ID는 NULL로 처리)
+    SELECT SALES_DATE, PRODUCT_ID, NULL AS USER_ID, SALES_AMOUNT
+    FROM OFFLINE_SALE
+    WHERE SALES_DATE LIKE '2022-03%'
+) AS COMBINED_SALES
+ORDER BY SALES_DATE ASC, PRODUCT_ID ASC, USER_ID ASC;
+```
+- UNION은 중복된 행을 제거하지만, UNION ALL은 모든 데이터를 그대로 합칩니다.
+- 이 문제에서는 판매 데이터의 중복 제거가 필요 없으므로 성능이 더 빠른 UNION ALL을 사용하는 것이 관례입니다
+- UNION의 3대 필수 규칙규칙상세 내용
+    - 컬럼 개수 동일모든 SELECT 문에 나열된 컬럼의 개수가 반드시 같아야 합니다
+    - 데이터 타입 호환대응하는 위치의 컬럼들은 데이터 타입이 같거나, 최소한 암시적 변환이 가능할 정도로 호환(Compatible)되어야 합니다.
+    - 컬럼 순서 일치데이터의 의미에 맞게 컬럼의 순서가 동일해야 합니다.
