@@ -218,8 +218,7 @@ order by ANIMAL_ID
 ## 5일차(1/3)
 |유형|문제|코드|
 |:--:|:--:|:--:|
-|select|모든 레코드 조회하기<br>
-https://school.programmers.co.kr/learn/courses/30/lessons/131537|Union All|
+|select|오프라인/온라인 판매 데이터 통합하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/131537|Union All|
 
 ```sql
 SELECT DATE_FORMAT(SALES_DATE, '%Y-%m-%d') AS SALES_DATE, 
@@ -230,8 +229,7 @@ FROM (
     -- 온라인 판매 데이터
     SELECT SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
     FROM ONLINE_SALE
-    WHERE SALES_DATE LIKE '2022-03%'
-
+    WHERE SALES_DATE >= '2022-03-01' and SALES_DATE <'2022-04-01'
     UNION ALL
 
     -- 오프라인 판매 데이터 (USER_ID는 NULL로 처리)
