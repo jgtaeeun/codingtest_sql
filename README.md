@@ -301,12 +301,35 @@ and  AGE between 20 and 29;
 
 |유형|문제|코드|
 |:--:|:--:|:--:|
-|select|업그레이드 된 아이템 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/273711|COUNT(*) <br> YEAR() <br> between |
+|select|업그레이드 된 아이템 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/273711|서브쿼리를 활용한 IN 방식|
 
 ```sql
-SELECT count(*) as USERS
-from USER_INFO
-where JOINED >= '2021-01-01' and JOINED < '2022-01-01'
-and  AGE between 20 and 29;
+select ITEM_ID,	ITEM_NAME,	RARITY
+from ITEM_INFO
+where ITEM_ID in ( SELECT ITEM_TREE.ITEM_ID FROM ITEM_TREE JOIN (select ITEM_ID from ITEM_INFO WHERE RARITY = 'RARE') as  temp on ITEM_TREE.PARENT_ITEM_ID = temp.ITEM_ID)
+order by ITEM_ID desc
 ```
 
+```sql
+SELECT ITEM_ID, ITEM_NAME, RARITY
+FROM ITEM_INFO
+WHERE ITEM_ID IN (
+    SELECT T.ITEM_ID
+    FROM ITEM_TREE T
+    JOIN ITEM_INFO I ON T.PARENT_ITEM_ID = I.ITEM_ID
+    WHERE I.RARITY = 'RARE'
+)
+ORDER BY ITEM_ID DESC;
+```
+
+
+
+- 트리 테이블(ITEM_TREE)의 컬럼 해석
+  - PARENT_ITEM_ID: 업그레이드 전 (뿌리, 재료)
+  - ITEM_ID: 업그레이드 후 (결과물)
+  - 문제에서 "업그레이드 된 아이템의 정보"를 원했으므로, 최종적으로 우리는 ITEM_TREE.ITEM_ID에 해당하는 상세 정보를 찾아야 합니다.
+- 연결 고리로서의 JOIN 활용
+  - 1단계: ITEM_INFO에서 'RARE' 아이템들의 ID를 찾는다.
+  - 2단계: 위에서 찾은 ID를 ITEM_TREE의 PARENT_ITEM_ID와 매칭시킨다.
+  - 3단계: 매칭된 행의 **ITEM_ID**를 확인한다.
+  - 4단계: 그 ITEM_ID의 진짜 이름과 등급을 알기 위해 다시 ITEM_INFO를 조회한다.
