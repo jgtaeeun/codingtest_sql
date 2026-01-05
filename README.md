@@ -331,5 +331,7 @@ ORDER BY ITEM_ID DESC;
 - 연결 고리로서의 JOIN 활용
   - 1단계: ITEM_INFO에서 'RARE' 아이템들의 ID를 찾는다.
   - 2단계: 위에서 찾은 ID를 ITEM_TREE의 PARENT_ITEM_ID와 매칭시킨다.
-  - 3단계: 매칭된 행의 **ITEM_ID**를 확인한다.
+  - 3단계: 매칭된 행의 ITEM_ID를 확인한다.
   - 4단계: 그 ITEM_ID의 진짜 이름과 등급을 알기 위해 다시 ITEM_INFO를 조회한다.
+
+## 7일차(1/6)
