@@ -216,6 +216,7 @@ order by ANIMAL_ID
 ```
 
 ## 5일차(1/3)
+
 |유형|문제|코드|
 |:--:|:--:|:--:|
 |select|오프라인/온라인 판매 데이터 통합하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/131537|Union All|
@@ -245,3 +246,67 @@ ORDER BY SALES_DATE ASC, PRODUCT_ID ASC, USER_ID ASC;
     - 컬럼 개수 동일모든 SELECT 문에 나열된 컬럼의 개수가 반드시 같아야 합니다
     - 데이터 타입 호환대응하는 위치의 컬럼들은 데이터 타입이 같거나, 최소한 암시적 변환이 가능할 정도로 호환(Compatible)되어야 합니다.
     - 컬럼 순서 일치데이터의 의미에 맞게 컬럼의 순서가 동일해야 합니다.
+
+## 6일차(1/5)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|어린 동물 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/59037|SQL 논리 연산자 <br> = 같다<br> != 또는 <> 같지 않다 |
+
+```sql
+SELECT ANIMAL_ID ,NAME
+from ANIMAL_INS
+where not INTAKE_CONDITION = 'Aged'
+order by ANIMAL_ID;
+```
+
+```sql
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+WHERE INTAKE_CONDITION != 'Aged'
+ORDER BY ANIMAL_ID;
+```
+
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|상위 n개 레코드<br>https://school.programmers.co.kr/learn/courses/30/lessons/59405|LIMIT|
+
+```sql
+SELECT NAME 
+from ANIMAL_INS
+order by DATETIME limit 1
+```
+
+```sql
+-- Oracle 방식
+SELECT NAME
+FROM (SELECT * FROM ANIMAL_INS ORDER BY DATETIME)
+WHERE ROWNUM <= 1;
+```
+- 오라클 ROWNUM의 핵심 특징
+  - ROWNUM은 1번부터만 가져올 수 있다. (ROWNUM <= n 형태)
+  - 정렬이 먼저 되어야 한다면, ORDER BY를 안쪽(서브쿼리)에 넣어야 한다.
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|조건에 맞는 회원수 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/131535|COUNT(*) <br> YEAR() <br> between |
+
+```sql
+SELECT count(*) as USERS
+from USER_INFO
+where JOINED >= '2021-01-01' and JOINED < '2022-01-01'
+and  AGE between 20 and 29;
+```
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|업그레이드 된 아이템 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/273711|COUNT(*) <br> YEAR() <br> between |
+
+```sql
+SELECT count(*) as USERS
+from USER_INFO
+where JOINED >= '2021-01-01' and JOINED < '2022-01-01'
+and  AGE between 20 and 29;
+```
+
