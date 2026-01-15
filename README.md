@@ -410,5 +410,19 @@ ORDER BY ID;
   - 우리가 구한 ~1의 결과:1111...1110 (1이 63개이고 끝에만 0)
   - 산술적으로 표현하면 $2^{64} - 2$
   
-## 8일차(1/7)
+## 8일차(1/15)
 
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|가장 큰 물고기 10마리 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/298517| LIMIT 구문은 항상 쿼리의 가장 마지막에 위치해야 합니다.|
+
+```sql
+SELECT ID, LENGTH
+FROM FISH_INFO
+ORDER BY LENGTH DESC, ID ASC
+LIMIT 10;
+```
+- LIMIT 구문은 항상 쿼리의 가장 마지막에 위치해야 합니다.
+
+- NULL 처리
+  - 이 문제의 데이터셋에서는 LENGTH가 WHERE LENGTH > 10 같은 조건이 필요할 수 있지만, 상위 10마리를 뽑는 DESC 정렬에서는 NULL이 자동으로 하단으로 밀려나기 때문에 별도의 IS NOT NULL 없이도 정답 처리가 되는 경우가 많습니다.
