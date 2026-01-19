@@ -426,3 +426,63 @@ LIMIT 10;
 
 - NULL 처리
   - 이 문제의 데이터셋에서는 LENGTH가 WHERE LENGTH > 10 같은 조건이 필요할 수 있지만, 상위 10마리를 뽑는 DESC 정렬에서는 NULL이 자동으로 하단으로 밀려나기 때문에 별도의 IS NOT NULL 없이도 정답 처리가 되는 경우가 많습니다.
+
+
+## 9일차(1/19)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|대장균들의 자식의 수 구하기<br>https://school.programmers.co.kr/learn/courses/30/lessons/299305| INNER JOIN (교집합) <br> 양쪽 테이블에 모두 존재하는 데이터만 합치는 방식입니다. <br>  <br>  LEFT (OUTER) JOIN <br> 왼쪽 테이블의 모든 데이터를 가져오고, 오른쪽 테이블에서 일치하는 데이터를 붙입니다.|
+
+```sql
+SELECT E.ID, COUNT(T.PARENT_ID) AS CHILD_COUNT
+FROM ECOLI_DATA  E
+LEFT JOIN  ECOLI_DATA T
+ON E. ID= T.PARENT_ID
+GROUP BY E.ID
+ORDER BY E.ID ASC
+```
+```sql
+-- 스칼라 서브쿼리를 이용한 풀이
+SELECT 
+    ID, 
+    (SELECT COUNT(*) 
+     FROM ECOLI_DATA 
+     WHERE PARENT_ID = ED.ID) AS CHILD_COUNT
+FROM ECOLI_DATA ED
+ORDER BY ID ASC;
+```
+- 올바른 사고의 흐름
+  - 이 문제를 풀 때는 "부모 입장에서 자식이 몇 명인지"를 세어야 합니다.
+  - 왼쪽 테이블(부모): 모든 대장균 리스트 (E1)
+  - 오른쪽 테이블(자식): 누군가를 부모로 모시는 대장균 리스트 (E2)
+  - 연결 조건: 부모의 ID = 자식의 PARENT_ID
+  - 기준: 모든 부모(E1)를 다 보여줘야 하므로 LEFT JOIN
+ 
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|대장균의 크기에 따라 분류하기 1<br>https://school.programmers.co.kr/learn/courses/30/lessons/299307| CASE WHEN |
+
+
+
+```sql
+-- CASE WHEN  기본 문법 구조
+SELECT 
+    CASE 
+        WHEN 조건1 THEN 결과1
+        WHEN 조건2 THEN 결과2
+        ELSE 결과3 -- 모든 조건에 해당하지 않을 때 (생략 가능, ELSE 생략 시 NULL)
+    END AS 별칭
+FROM 테이블명;
+```
+```SQL
+SELECT ID,
+    CASE 
+    WHEN SIZE_OF_COLONY	 <=100 THEN 'LOW'
+    WHEN SIZE_OF_COLONY	 <=1000 THEN 'MEDIUM'
+    ELSE 'HIGH' 
+    END AS SIZE
+
+FROM ECOLI_DATA
+ORDER BY ID
+```
