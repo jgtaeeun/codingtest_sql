@@ -492,7 +492,7 @@ ORDER BY ID
 
 |유형|문제|코드|
 |:--:|:--:|:--:|
-|select|특정 형질을 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646| 비트연산자 <br> 연산자 우선순위,괄호|
+|select|특정 형질을 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646|비트연산자<br>연산자 우선순위,괄호|
 
 ```sql
 SELECT COUNT(*) AS COUNT
@@ -503,7 +503,7 @@ WHERE (GENOTYPE & 2) = 0
 
 - 실제 코딩 테스트에서는 비교 연산자(= 0, > 0)를 명시해 주는 것이 가독성도 좋고 실수도 적습니다.
 
-- ** AND와 OR가 섞여 있을 때는 연산 우선순위 때문에 반드시 괄호를 사용해야 합니다. ** (사용하지 않으면 AND가 먼저 계산되어 의도치 않은 결과가 나옵니다.)
+- **AND와 OR가 섞여 있을 때는 연산 우선순위 때문에 반드시 괄호를 사용해야 합니다.** (사용하지 않으면 AND가 먼저 계산되어 의도치 않은 결과가 나옵니다.)
 
 |유형|문제|코드|
 |:--:|:--:|:--:|
@@ -517,7 +517,7 @@ P.GENOTYPE AS PARENT_GENOTYPE
 FROM ECOLI_DATA C
 INNER JOIN ECOLI_DATA P
 ON C.PARENT_ID = P.ID 
-WHERE (C.GENOTYPE & P.GENOTYPE) =  P.GENOTYPE
+WHERE(C.GENOTYPE&P.GENOTYPE)=P.GENOTYPE
 ORDER BY C.ID;
 ```
 
