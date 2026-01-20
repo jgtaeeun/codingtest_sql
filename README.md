@@ -486,3 +486,43 @@ SELECT ID,
 FROM ECOLI_DATA
 ORDER BY ID
 ```
+
+
+## 10일차(1/20)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|특정 형질을 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646| 비트연산자 <br> 연산자 우선순위,괄호|
+
+```sql
+SELECT COUNT(*) AS COUNT
+FROM ECOLI_DATA
+WHERE (GENOTYPE & 2) = 0 
+  AND ((GENOTYPE & 1) > 0 OR (GENOTYPE & 4) > 0); 
+```
+
+- 실제 코딩 테스트에서는 비교 연산자(= 0, > 0)를 명시해 주는 것이 가독성도 좋고 실수도 적습니다.
+
+- ** AND와 OR가 섞여 있을 때는 연산 우선순위 때문에 반드시 괄호를 사용해야 합니다. ** (사용하지 않으면 AND가 먼저 계산되어 의도치 않은 결과가 나옵니다.)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|부모의 형질을 모두 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301647| 비트 연산 A & B의 결과는 항상 B보다 작거나 같을 수밖에 없습니다. |
+
+```sql
+SELECT 
+C.ID, 
+C.GENOTYPE, 
+P.GENOTYPE AS PARENT_GENOTYPE
+FROM ECOLI_DATA C
+INNER JOIN ECOLI_DATA P
+ON C.PARENT_ID = P.ID 
+WHERE (C.GENOTYPE & P.GENOTYPE) =  P.GENOTYPE
+ORDER BY C.ID;
+```
+
+- INNER JOIN 사용
+    - 문제에서 "부모의 형질을 모두 가지는" 개체를 찾으라고 했으므로, 부모가 없는(PARENT_ID가 NULL인) 개체는 비교 대상에서 제외되어야 합니다.
+    - LEFT JOIN을 써도 WHERE 절에서 부모 데이터가 없으면 탈락하겠지만, 의미상 INNER JOIN이 더 명확합니다
+
+- 비트 연산 A & B의 결과는 항상 B보다 작거나 같을 수밖에 없습니다. 따라서 (C.GENOTYPE & P.GENOTYPE) = P.GENOTYPE이라고 명확하게 일치 여부를 따지는 것이 가장 안전하고 정확한 로직입니다.
