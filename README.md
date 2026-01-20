@@ -492,7 +492,7 @@ ORDER BY ID
 
 |유형|문제|코드|
 |:--:|:--:|:--:|
-|select|특정 형질을 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646|비트연산자<br>연산자 우선순위,괄호|
+|select|특정 형질을 가지는 대장균 찾기<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646|비트연산자<br> 연산자 우선순위,괄호|
 
 ```sql
 SELECT COUNT(*) AS COUNT
