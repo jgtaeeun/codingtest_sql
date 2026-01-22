@@ -531,7 +531,7 @@ ORDER BY C.ID;
 
 |유형|문제|코드|
 |:--:|:--:|:--:|
-|select|대장균의 크기에 따라 분류하기 2<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646|윈도우함수 |
+|select|대장균의 크기에 따라 분류하기 2<br>https://school.programmers.co.kr/learn/courses/30/lessons/301649|윈도우함수 |
 
 
 ```sql
@@ -553,22 +553,21 @@ ORDER BY ID;
 ```
 
 - 윈도우 함수
+    - 윈도우 함수는 반드시 OVER 절과 함께 사용됩니다.
+    - PARTITION BY: 전체 데이터를 소그룹(파티션)으로 나눕니다. (GROUP BY와 유사)
+    - ORDER BY: 그룹 내에서 행들이 어떤 순서로 계산될지 정렬합니다.
+    - WINDOWING (ROWS/RANGE): 현재 행을 기준으로 계산에 포함할 행의 범위(예: 앞뒤 1행씩)를 구체적으로 지정합니다.
 ```sql
 SELECT 
     함수명(인수) OVER ([PARTITION BY 컬럼] [ORDER BY 컬럼] [WINDOWING 절])
 FROM 테이블명;
 ```
-    - 윈도우 함수는 반드시 OVER 절과 함께 사용됩니다.
-    - PARTITION BY: 전체 데이터를 소그룹(파티션)으로 나눕니다. (GROUP BY와 유사)
-    - ORDER BY: 그룹 내에서 행들이 어떤 순서로 계산될지 정렬합니다.
-    - WINDOWING (ROWS/RANGE): 현재 행을 기준으로 계산에 포함할 행의 범위(예: 앞뒤 1행씩)를 구체적으로 지정합니다.
-
 
 |분류|함수|설명|
 |:--:|:--:|:--:|
 |순위 함수|RANK|동일 값은 같은 순위 부여 <br> 다음 순위는 건너뜀 <br> (1, 1, 3...)|
-||DENSE_RANK|동일 값은 같은 순위 부여, 다음 순위는 연속적 (1, 1, 2...)|
-||ROW_NUMBER|동일 값이라도 고유한 일련번호 부여 (1, 2, 3...)|
+||DENSE_RANK|동일 값은 같은 순위 부여, 다음 순위는 연속적 <br>(1, 1, 2...)|
+||ROW_NUMBER|동일 값이라도 고유한 일련번호 부여 <br>(1, 2, 3...)|
 |집계 함수|SUM, AVG, MAX, MIN, COUNT|파티션 내의 누적 합계나 평균 등을 계산|
 |행 순서 함수|LAG|현재 행보다 이전(앞) 행의 값을 가져옴|
 ||LEAD|현재 행보다 이후(뒤) 행의 값을 가져옴|
