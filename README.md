@@ -526,3 +526,55 @@ ORDER BY C.ID;
     - LEFT JOIN을 써도 WHERE 절에서 부모 데이터가 없으면 탈락하겠지만, 의미상 INNER JOIN이 더 명확합니다
 
 - 비트 연산 A & B의 결과는 항상 B보다 작거나 같을 수밖에 없습니다. 따라서 (C.GENOTYPE & P.GENOTYPE) = P.GENOTYPE이라고 명확하게 일치 여부를 따지는 것이 가장 안전하고 정확한 로직입니다.
+
+## 11일차(1/22)
+
+|유형|문제|코드|
+|:--:|:--:|:--:|
+|select|대장균의 크기에 따라 분류하기 2<br>https://school.programmers.co.kr/learn/courses/30/lessons/301646|윈도우함수 |
+
+
+```sql
+SELECT 
+    ID, 
+    CASE 
+        WHEN PER = 1 THEN 'CRITICAL'
+        WHEN PER = 2 THEN 'HIGH'
+        WHEN PER = 3 THEN 'MEDIUM'
+        ELSE 'LOW'
+    END AS COLONY_NAME
+FROM (
+    SELECT 
+        ID, 
+        NTILE(4) OVER (ORDER BY SIZE_OF_COLONY DESC) AS PER
+    FROM ECOLI_DATA
+) AS SUB
+ORDER BY ID;
+```
+
+- 윈도우 함수
+```sql
+SELECT 
+    함수명(인수) OVER ([PARTITION BY 컬럼] [ORDER BY 컬럼] [WINDOWING 절])
+FROM 테이블명;
+```
+    - 윈도우 함수는 반드시 OVER 절과 함께 사용됩니다.
+    - PARTITION BY: 전체 데이터를 소그룹(파티션)으로 나눕니다. (GROUP BY와 유사)
+    - ORDER BY: 그룹 내에서 행들이 어떤 순서로 계산될지 정렬합니다.
+    - WINDOWING (ROWS/RANGE): 현재 행을 기준으로 계산에 포함할 행의 범위(예: 앞뒤 1행씩)를 구체적으로 지정합니다.
+
+
+|분류|함수|설명|
+|:--:|:--:|:--:|
+|순위 함수|RANK|동일 값은 같은 순위 부여 <br> 다음 순위는 건너뜀 <br> (1, 1, 3...)|
+||DENSE_RANK|동일 값은 같은 순위 부여, 다음 순위는 연속적 (1, 1, 2...)|
+||ROW_NUMBER|동일 값이라도 고유한 일련번호 부여 (1, 2, 3...)|
+|집계 함수|SUM, AVG, MAX, MIN, COUNT|파티션 내의 누적 합계나 평균 등을 계산|
+|행 순서 함수|LAG|현재 행보다 이전(앞) 행의 값을 가져옴|
+||LEAD|현재 행보다 이후(뒤) 행의 값을 가져옴|
+|비율 함수|NTILE(n)|데이터를 n개의 그룹으로 등분 (예: 사분위수)|
+||PERCENT_RANK|해당 행의 백분위 순위를 0~1 사이로 계산|
+
+- GROUP BY vs 윈도우 함수 차이점
+    - GROUP BY: 집계 후 행의 개수가 그룹 수만큼 줄어듭니다. 상세 데이터를 볼 수 없습니다.
+    - 윈도우 함수: 집계 결과가 새로운 컬럼으로 붙을 뿐, 전체 행의 상세 정보가 그대로 유지됩니다.
